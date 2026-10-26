@@ -1,18 +1,47 @@
 <!DOCTYPE html>
-<html>
-<head><title>Login</title></head>
-<body style="font-family: sans-serif; padding: 20px; max-width: 400px;">
-    <h2>Login System</h2>
-    @if(session('success')) <p style="color:green;">{{ session('success') }}</p> @endif
-    @if($errors->any()) <p style="color:red;">{{ $errors->first() }}</p> @endif
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-sm">
+        <h2 class="text-xl font-bold text-center text-gray-800 mb-6">Login Account</h2>
 
-    <form action="{{ route('login.post') }}" method="POST">
-        @csrf
-        <p><label>Email:</label><br><input type="email" name="email" style="width:100%" required></p>
-        <p><label>Password:</label><br><input type="password" name="password" style="width:100%" required></p>
-        <p><input type="checkbox" name="remember" id="remember"> <label for="remember">Remember Me</label></p>
-        <button type="submit">Login</button>
-    </form>
-    <p>Belum punya akun? <a href="{{ route('register') }}">Register di sini</a></p>
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (isset($errors) && $errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block text-xs text-gray-700 mb-1">Email:</label>
+                <input type="email" name="email" value="{{ old('email') }}" required class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-700 mb-1">Password:</label>
+                <input type="password" name="password" required class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
+            </div>
+            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition duration-200 text-sm">Login</button>
+        </form>
+
+        <p class="text-xs text-center text-gray-500 mt-4">
+            Belum punya akun? <a href="{{ route('register') }}" class="text-gray-500 underline">Daftar di sini</a>
+        </p>
+    </div>
 </body>
 </html>
